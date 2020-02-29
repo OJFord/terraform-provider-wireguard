@@ -7,6 +7,7 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
+			"wireguard_asymmetric_key": resourceWireguardAsymmetricKey(),
 		},
 	}
 }
