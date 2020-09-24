@@ -28,6 +28,6 @@ The following arguments are supported:
 
 ## Attributes Reference
 
-The following attributes are exported:
+In addition to the arguments listed above, the following attributes are exported:
 
 * `public_key` - The public key corresponding to the (given or generated) private key.
