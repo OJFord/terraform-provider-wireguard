@@ -23,7 +23,7 @@ resource "wireguard_asymmetric_key" "example" {
 
 The following arguments are supported:
 
-* `bind` - (Optional) A string to tie the lifecycle too, e.g. the terraform ID of another resource.
+* `bind` - (Optional) A string to tie the lifecycle to, e.g. the terraform ID of another resource.
 * `private_key` - (Optional) A supplied WireGuard private key. By default one is generated.
 
 ## Attributes Reference
