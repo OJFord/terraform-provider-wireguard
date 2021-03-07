@@ -4,5 +4,4 @@ terraform {
       source = "OJFord/wireguard"
     }
   }
-  required_version = ">= 0.13"
 }
