@@ -160,7 +160,7 @@ Address = {{ . }}
 {{- end }}
 
 {{- if .DNS }}
-DNS = {{ range .DNS }}{{ . }},{{ end }}
+DNS = {{ range $i, $d := .DNS }}{{ if $i }},{{ end }}{{ $d }}{{ end }}
 {{- end }}
 
 {{- if .MTU }}
