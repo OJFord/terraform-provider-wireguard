@@ -62,7 +62,7 @@ jobs:
 
       - name: Check docs updated
         run: |
-          curl -L https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.4.0/tfplugindocs_0.4.0_linux_amd64.zip --output tfplugindocs.zip
+          curl -L https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.5.0/tfplugindocs_0.5.0_linux_amd64.zip --output tfplugindocs.zip
           unzip tfplugindocs.zip tfplugindocs
           ./tfplugindocs
           change="$(git diff)"
