@@ -43,6 +43,11 @@ jobs:
             exit 1
           fi
 
+      - name: Mod tidy
+        run: |
+          go mod tidy
+          git diff --exit-code
+
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
