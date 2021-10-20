@@ -69,7 +69,7 @@ output "peer1" {
 
 ### Read-Only
 
-- **conf** (String) The rendered config document.
+- **conf** (String, Sensitive) The rendered config document.
 
 <a id="nestedblock--peer"></a>
 ### Nested Schema for `peer`

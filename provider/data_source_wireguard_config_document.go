@@ -15,6 +15,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 				Description: "The rendered config document.",
 				Type:        schema.TypeString,
 				Computed:    true,
+				Sensitive:   true,
 			},
 
 			"private_key": {
