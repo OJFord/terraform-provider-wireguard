@@ -31,14 +31,16 @@ func resourceWireguardPresharedKeyCreate(d *schema.ResourceData, m interface{}) 
 	var err error
 
 	key, err = wgtypes.GenerateKey()
-	d.Set("preshared_key", key.String())
-	h := md5.New()
-	io.WriteString(h, key.String())
-	d.SetId(hex.EncodeToString(h.Sum(nil)))
-
+	err = d.Set("preshared_key", key.String())
 	if err != nil {
 		return err
 	}
+	h := md5.New()
+	_, err = io.WriteString(h, key.String())
+	if err != nil {
+		return err
+	}
+	d.SetId(hex.EncodeToString(h.Sum(nil)))
 
 	return nil
 }
