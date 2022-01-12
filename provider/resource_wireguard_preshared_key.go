@@ -1,25 +1,25 @@
 package provider
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
 	"encoding/hex"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
-	"io"
 )
 
 func resourceWireguardPresharedKey() *schema.Resource {
 	return &schema.Resource{
-		Description: "Provides a WireGuard asymmetric key resource. This can be used to create, read, and delete WireGuard keys in terraform state.",
+		Description: "Provides a WireGuard key resource. This can be used to create, read, and delete WireGuard preshared keys in terraform state.",
 
 		Create: resourceWireguardPresharedKeyCreate,
 		Read:   resourceWireguardPresharedKeyRead,
 		Delete: resourceWireguardPresharedKeyDelete,
 
 		Schema: map[string]*schema.Schema{
-			"preshared_key": {
+			"key": {
 				Description: "Additional layer of symmetric-key cryptography to be mixed into the already existing public-key cryptography, for post-quantum resistance.",
 				Computed:    true,
+				Sensitive:   true,
 				Type:        schema.TypeString,
 			},
 		},
@@ -31,16 +31,12 @@ func resourceWireguardPresharedKeyCreate(d *schema.ResourceData, m interface{}) 
 	var err error
 
 	key, err = wgtypes.GenerateKey()
-	err = d.Set("preshared_key", key.String())
+	err = d.Set("key", key.String())
 	if err != nil {
 		return err
 	}
-	h := md5.New()
-	_, err = io.WriteString(h, key.String())
-	if err != nil {
-		return err
-	}
-	d.SetId(hex.EncodeToString(h.Sum(nil)))
+	hash := sha256.Sum256([]byte(key.String()))
+	d.SetId(hex.EncodeToString(hash[:]))
 
 	return nil
 }

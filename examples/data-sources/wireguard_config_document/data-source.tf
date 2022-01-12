@@ -10,6 +10,7 @@ data "wireguard_config_document" "peer1" {
 
   peer {
     public_key = wireguard_asymmetric_key.peer2.public_key
+    presharedkey = wireguard_preshared_key.peer2.key
     allowed_ips = [
       "0.0.0.0/0",
     ]
