@@ -11,6 +11,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"wireguard_asymmetric_key": resourceWireguardAsymmetricKey(),
+			"wireguard_preshared_key":  resourceWireguardPresharedKey(),
 		},
 	}
 }
