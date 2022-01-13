@@ -1,4 +1,4 @@
-EXAMPLES := $(wildcard examples/*)
+EXAMPLES := $(wildcard examples/*/*)
 
 default: build
 
@@ -11,6 +11,6 @@ fmt:
 examples: build $(EXAMPLES)
 	for d in $(EXAMPLES); do \
 		echo "Applying example $$d" ;\
-		terraform init "$$d" ;\
-		terraform apply -auto-approve "$$d" ;\
+		terraform -chdir="$$d" init;\
+		terraform -chdir="$$d" apply -auto-approve;\
 	done
