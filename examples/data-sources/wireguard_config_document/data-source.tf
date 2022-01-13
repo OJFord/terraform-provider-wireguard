@@ -26,5 +26,6 @@ data "wireguard_config_document" "peer1" {
 }
 
 output "peer1" {
-  value = data.wireguard_config_document.peer1.conf
+  value     = data.wireguard_config_document.peer1.conf
+  sensitive = true
 }
