@@ -1,4 +1,4 @@
-EXAMPLES := $(wildcard examples/*/*)
+.ONESHELL:
 
 default: build
 
@@ -8,9 +8,21 @@ build: fmt
 fmt:
 	go fmt
 
-examples: build $(EXAMPLES)
-	for d in $(EXAMPLES); do \
-		echo "Applying example $$d" ;\
-		terraform -chdir="$$d" init;\
-		terraform -chdir="$$d" apply -auto-approve;\
+terraformrc:
+	cat <<-EOC > $@
+		provider_installation {
+		  dev_overrides {
+		    "OJFord/wireguard" = "$$PWD"
+		  }
+		  direct {}
+		}
+	EOC
+
+examples: build terraformrc
+	shopt -s globstar
+	for d in examples/**/versions.tf; do
+		d="$$(dirname $$d)"
+		echo "Applying example $$d"
+		TF_CLI_CONFIG_FILE="$$PWD/terraformrc" terraform -chdir="$$d" init
+		TF_CLI_CONFIG_FILE="$$PWD/terraformrc" terraform -chdir="$$d" apply -auto-approve
 	done

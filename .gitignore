@@ -3,3 +3,4 @@ examples/**/.terraform.lock.hcl
 *.tfstate
 
 /terraform-provider-wireguard
+/terraformrc
