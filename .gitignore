@@ -4,3 +4,4 @@ examples/**/.terraform.lock.hcl
 
 /terraform-provider-wireguard
 /terraformrc
+.envrc
