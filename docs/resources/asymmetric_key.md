@@ -33,12 +33,12 @@ output "wg_private_key" {
 
 ### Optional
 
-- **bind** (String) A string to tie the lifecycle to, e.g. the terraform ID of another resource.
-- **id** (String) The ID of this resource.
-- **private_key** (String, Sensitive) A supplied WireGuard private key. By default one is generated.
+- `bind` (String) A string to tie the lifecycle to, e.g. the terraform ID of another resource.
+- `id` (String) The ID of this resource.
+- `private_key` (String, Sensitive) A supplied WireGuard private key. By default one is generated.
 
 ### Read-Only
 
-- **public_key** (String) The public key corresponding to the (given or generated) private key.
+- `public_key` (String) The public key corresponding to the (given or generated) private key.
 
 

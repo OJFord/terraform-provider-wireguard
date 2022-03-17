@@ -28,10 +28,10 @@ output "wg_preshared_key" {
 
 ### Optional
 
-- **id** (String) The ID of this resource.
+- `id` (String) The ID of this resource.
 
 ### Read-Only
 
-- **key** (String, Sensitive) Additional layer of symmetric-key cryptography to be mixed into the already existing public-key cryptography, for post-quantum resistance.
+- `key` (String, Sensitive) Additional layer of symmetric-key cryptography to be mixed into the already existing public-key cryptography, for post-quantum resistance.
 
 
