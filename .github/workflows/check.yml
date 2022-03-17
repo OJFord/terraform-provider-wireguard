@@ -12,8 +12,8 @@ jobs:
     name: Go
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
           go-version: ^1.18
 
@@ -50,8 +50,36 @@ jobs:
           go mod tidy
           git diff --exit-code
 
-  terraform:
-    name: Terraform
+  terraform-docs:
+    name: Terraform docs
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check docs updated
+        run: |
+          version=0.7.0
+          curl \
+            -L https://github.com/hashicorp/terraform-plugin-docs/releases/download/v${version}/tfplugindocs_${version}_linux_amd64.zip \
+            --output tfplugindocs.zip
+          unzip tfplugindocs.zip tfplugindocs
+          go version
+          terraform --version
+          ./tfplugindocs --version
+          ./tfplugindocs generate
+          change="$(git diff)"
+          if [ -n "$change" ]; then
+            >&2 echo "$change"
+            exit 1
+          fi
+
+  terraform-examples:
+    name: Terraform examples
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -64,19 +92,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.18
+
       - name: Terraformat
         run: terraform fmt -recursive examples
 
       - name: Check examples
         run: make examples
 
-      - name: Check docs updated
-        run: |
-          curl -L https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.7.0/tfplugindocs_0.7.0_linux_amd64.zip --output tfplugindocs.zip
-          unzip tfplugindocs.zip tfplugindocs
-          ./tfplugindocs
-          change="$(git diff)"
-          if [ -n "$change" ]; then
-            >&2 echo "$change"
-            exit 1
-          fi
+
