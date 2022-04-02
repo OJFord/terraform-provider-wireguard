@@ -34,6 +34,12 @@ func resourceWireguardAsymmetricKey() *schema.Resource {
 				Computed:    true,
 				Type:        schema.TypeString,
 			},
+			"description": {
+				Description: "A string to represent the resource holder of public/private key",
+				Optional:    true,
+				ForceNew:    true,
+				Type:        schema.TypeString,
+			},
 		},
 	}
 }
@@ -48,6 +54,11 @@ func resourceWireguardAsymmetricKeyCreate(d *schema.ResourceData, m interface{})
 		d.Set("private_key", key.String())
 	} else {
 		key, err = wgtypes.ParseKey(private_key.(string))
+	}
+
+	description := d.Get("description")
+	if description != "" {
+		d.Set("description", description.(string))
 	}
 
 	if err != nil {

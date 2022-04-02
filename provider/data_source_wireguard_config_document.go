@@ -102,6 +102,12 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 				},
 			},
 
+			"description": {
+				Description: "Optional descriptive string associated with this server.",
+				Type: schema.TypeString,
+				Optional: true,
+			},
+
 			"peer": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -133,6 +139,11 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 						"persistent_keepalive": {
 							Description: "Period in seconds (or \"off\") after which to ping the peer to keep a stateful firewall or NAT mapping valid.",
 							Type:        schema.TypeInt,
+							Optional:    true,
+						},
+						"description": {
+							Description: "The optional descriptive string associated for this peer.",
+							Type:        schema.TypeString,
 							Optional:    true,
 						},
 					},
@@ -190,6 +201,9 @@ PostDown = {{ . }}
 
 {{- range .Peers }}
 
+{{ if .Description  }}
+# {{ .Description }}
+{{- end }}
 [Peer]
 PublicKey = {{ .PublicKey }}
 
@@ -220,6 +234,7 @@ type WgPeerConfig struct {
 	AllowedIPs          []string
 	Endpoint            *string
 	PersistentKeepalive *int
+	Description         *string
 }
 
 type WgQuickConfig struct {
@@ -239,6 +254,7 @@ type WgConfig struct {
 	FirewallMark *string
 	WgQuickConfig
 	Peers []WgPeerConfig
+	Description *string
 }
 
 func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}) error {
@@ -308,6 +324,11 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 		}
 	}
 
+	if v, set := d.GetOk("description"); set {
+		descr := v.(string)
+		cfg.Description = &descr
+	}
+	
 	if v, set := d.GetOk("peer"); set {
 		peers := v.([]interface{})
 
@@ -316,6 +337,11 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 
 			peerCfg := WgPeerConfig{
 				PublicKey: peer["public_key"].(string),
+			}
+
+			if v := peer["description"]; v != "" {
+				descr := v.(string)
+				peerCfg.Description = &descr
 			}
 
 			if v := peer["preshared_key"]; v != "" {

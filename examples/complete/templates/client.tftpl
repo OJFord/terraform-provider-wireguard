@@ -1,0 +1,14 @@
+# Client configuration for => ${wgPeerDescription}
+[Interface]
+Address = ${wgPeerAddress}
+DNS = ${wgPeerDnsAddress}
+PrivateKey = ${wgPeerPrivateKey}
+%{ if wgPeerMTU != "" }MTU = ${wgPeerMTU}%{ endif } 
+
+[Peer]
+AllowedIPs = ${wgPeerAllowedIps}
+Endpoint = ${wgPeerEndpoint}:${wgServerPort}
+PersistentKeepAlive = ${wgPeerKeepAlive}
+PublicKey = ${wgServerPublicKey}
+PresharedKey = ${wgPeerPresharedKey}
+

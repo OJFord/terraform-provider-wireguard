@@ -22,6 +22,12 @@ func resourceWireguardPresharedKey() *schema.Resource {
 				Sensitive:   true,
 				Type:        schema.TypeString,
 			},
+			"description": {
+				Description: "A string to represent the resource holder of preshared keys",
+				Optional:    true,
+				ForceNew:    true,
+				Type:        schema.TypeString,
+			},
 		},
 	}
 }
@@ -32,6 +38,10 @@ func resourceWireguardPresharedKeyCreate(d *schema.ResourceData, m interface{}) 
 
 	key, err = wgtypes.GenerateKey()
 	err = d.Set("key", key.String())
+	description := d.Get("description")
+	if description != "" {
+		d.Set("description", description.(string))
+	}
 	if err != nil {
 		return err
 	}
