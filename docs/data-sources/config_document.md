@@ -59,7 +59,6 @@ output "peer1" {
 - `addresses` (Set of String) IPs (or CIDR) to be assigned to the interface. (`wg-quick`/apps only.)
 - `dns` (Set of String) IPs or hostnames of Domain Name Servers to set as the interface's DNS search domains. (`wg-quick`/apps only.)
 - `firewall_mark` (String) A 32-bit fwmark for outgoing packets.
-- `id` (String) The ID of this resource.
 - `listen_port` (Number) .
 - `mtu` (Number) Manual MTU to override automatic discovery. (`wg-quick`/apps only.)
 - `peer` (Block List) (see [below for nested schema](#nestedblock--peer))
@@ -72,6 +71,7 @@ output "peer1" {
 ### Read-Only
 
 - `conf` (String, Sensitive) The rendered config document.
+- `id` (String) The ID of this resource.
 
 <a id="nestedblock--peer"></a>
 ### Nested Schema for `peer`
