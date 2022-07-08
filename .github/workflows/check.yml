@@ -63,7 +63,7 @@ jobs:
 
       - name: Check docs updated
         run: |
-          version=0.8.0
+          version=0.13.0
           curl \
             -L https://github.com/hashicorp/terraform-plugin-docs/releases/download/v${version}/tfplugindocs_${version}_linux_amd64.zip \
             --output tfplugindocs.zip
