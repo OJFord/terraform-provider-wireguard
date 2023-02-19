@@ -1,6 +1,6 @@
 module github.com/OJFord/terraform-provider-wireguard
 
-go 1.17
+go 1.20
 
 require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.25.0
