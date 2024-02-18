@@ -68,7 +68,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 			"pre_up": {
 				Description: "Script to run before setting up the interface. (`wg-quick`/apps only.)",
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -77,7 +77,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 			"post_up": {
 				Description: "Scripts to run after setting up the interface. (`wg-quick`/apps only.)",
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -86,7 +86,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 			"pre_down": {
 				Description: "Scripts to run before tearing down the interface. (`wg-quick`/apps only.)",
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -95,7 +95,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 			"post_down": {
 				Description: "Scripts to run before tearing down the interface. (`wg-quick`/apps only.)",
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -119,7 +119,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 						},
 						"allowed_ips": {
 							Description: "IPs (or CIDR) allowed for traffic to/from this peer.",
-							Type:        schema.TypeSet,
+							Type:        schema.TypeList,
 							Optional:    true,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
