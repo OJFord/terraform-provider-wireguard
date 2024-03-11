@@ -62,10 +62,10 @@ output "peer1" {
 - `listen_port` (Number) .
 - `mtu` (Number) Manual MTU to override automatic discovery. (`wg-quick`/apps only.)
 - `peer` (Block List) (see [below for nested schema](#nestedblock--peer))
-- `post_down` (Set of String) Scripts to run before tearing down the interface. (`wg-quick`/apps only.)
-- `post_up` (Set of String) Scripts to run after setting up the interface. (`wg-quick`/apps only.)
-- `pre_down` (Set of String) Scripts to run before tearing down the interface. (`wg-quick`/apps only.)
-- `pre_up` (Set of String) Script to run before setting up the interface. (`wg-quick`/apps only.)
+- `post_down` (List of String) Scripts to run before tearing down the interface. (`wg-quick`/apps only.)
+- `post_up` (List of String) Scripts to run after setting up the interface. (`wg-quick`/apps only.)
+- `pre_down` (List of String) Scripts to run before tearing down the interface. (`wg-quick`/apps only.)
+- `pre_up` (List of String) Script to run before setting up the interface. (`wg-quick`/apps only.)
 - `routing_table` (Number) Controls the routing table (or "off") to which routes are added. (`wg-quick`/apps only.)
 
 ### Read-Only
@@ -82,7 +82,7 @@ Required:
 
 Optional:
 
-- `allowed_ips` (Set of String) IPs (or CIDR) allowed for traffic to/from this peer.
+- `allowed_ips` (List of String) IPs (or CIDR) allowed for traffic to/from this peer.
 - `endpoint` (String) An endpoint IP:port or hostname:port at which this peer can be reached initially.
 - `persistent_keepalive` (Number) Period in seconds (or "off") after which to ping the peer to keep a stateful firewall or NAT mapping valid.
 - `preshared_key` (String) A base64 preshared key from this peer.
