@@ -226,7 +226,7 @@ type WgQuickConfig struct {
 	Addresses    []string
 	DNS          []string
 	MTU          *int
-	RoutingTable *string
+	RoutingTable *int
 	PreUp        []string
 	PostUp       []string
 	PreDown      []string
@@ -276,7 +276,7 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 	}
 
 	if v, set := d.GetOk("routing_table"); set {
-		rt := v.(string)
+		rt := v.(int)
 		cfg.RoutingTable = &rt
 	}
 
