@@ -62,7 +62,7 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 			"routing_table": {
 				Description: "Controls the routing table (or \"off\") to which routes are added. (`wg-quick`/apps only.)",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeString,
 				Optional:    true,
 			},
 
@@ -280,28 +280,28 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 		cfg.RoutingTable = &rt
 	}
 
-	if vals := d.Get("pre_up").(*schema.Set).List(); len(vals) > 0 {
+	if vals := d.Get("pre_up").([]interface{}); len(vals) > 0 {
 		cfg.PreUp = make([]string, len(vals))
 		for i, v := range vals {
 			cfg.PreUp[i] = v.(string)
 		}
 	}
 
-	if vals := d.Get("post_up").(*schema.Set).List(); len(vals) > 0 {
+	if vals := d.Get("post_up").([]interface{}); len(vals) > 0 {
 		cfg.PostUp = make([]string, len(vals))
 		for i, v := range vals {
 			cfg.PostUp[i] = v.(string)
 		}
 	}
 
-	if vals := d.Get("pre_down").(*schema.Set).List(); len(vals) > 0 {
+	if vals := d.Get("pre_down").([]interface{}); len(vals) > 0 {
 		cfg.PreDown = make([]string, len(vals))
 		for i, v := range vals {
 			cfg.PreDown[i] = v.(string)
 		}
 	}
 
-	if vals := d.Get("post_down").(*schema.Set).List(); len(vals) > 0 {
+	if vals := d.Get("post_down").([]interface{}); len(vals) > 0 {
 		cfg.PostDown = make([]string, len(vals))
 		for i, v := range vals {
 			cfg.PostDown[i] = v.(string)
@@ -323,7 +323,7 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 				peerCfg.PresharedKey = &psk
 			}
 
-			if vals := peer["allowed_ips"].(*schema.Set).List(); len(vals) > 0 {
+			if vals := peer["allowed_ips"].([]interface{}); len(vals) > 0 {
 				peerCfg.AllowedIPs = make([]string, len(vals))
 				for i, v := range vals {
 					peerCfg.AllowedIPs[i] = v.(string)

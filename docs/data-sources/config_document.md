@@ -22,6 +22,7 @@ data "wireguard_config_document" "peer1" {
     "2606:4700:4700:0:0:0:0:64",
     "2606:4700:4700:0:0:0:0:6400",
   ]
+  routing_table = "123"
 
   peer {
     public_key    = wireguard_asymmetric_key.peer2.public_key
@@ -66,7 +67,7 @@ output "peer1" {
 - `post_up` (List of String) Scripts to run after setting up the interface. (`wg-quick`/apps only.)
 - `pre_down` (List of String) Scripts to run before tearing down the interface. (`wg-quick`/apps only.)
 - `pre_up` (List of String) Script to run before setting up the interface. (`wg-quick`/apps only.)
-- `routing_table` (Number) Controls the routing table (or "off") to which routes are added. (`wg-quick`/apps only.)
+- `routing_table` (String) Controls the routing table (or "off") to which routes are added. (`wg-quick`/apps only.)
 
 ### Read-Only
 

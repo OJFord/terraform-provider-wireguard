@@ -7,6 +7,7 @@ data "wireguard_config_document" "peer1" {
     "2606:4700:4700:0:0:0:0:64",
     "2606:4700:4700:0:0:0:0:6400",
   ]
+  routing_table = "123"
 
   peer {
     public_key    = wireguard_asymmetric_key.peer2.public_key
