@@ -87,5 +87,3 @@ Optional:
 - `endpoint` (String) An endpoint IP:port or hostname:port at which this peer can be reached initially.
 - `persistent_keepalive` (Number) Period in seconds (or "off") after which to ping the peer to keep a stateful firewall or NAT mapping valid.
 - `preshared_key` (String) A base64 preshared key from this peer.
-
-

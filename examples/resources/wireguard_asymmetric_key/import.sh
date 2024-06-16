@@ -1,0 +1,1 @@
+terraform import wireguard_asymmetric_key.example "EFr5/97eoK32SeMingmUqJpE4TL21nckcl2jQ9ZT82g="

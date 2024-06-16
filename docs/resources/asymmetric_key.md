@@ -41,4 +41,10 @@ output "wg_private_key" {
 - `id` (String) The ID of this resource.
 - `public_key` (String) The public key corresponding to the (given or generated) private key.
 
+## Import
 
+Import is supported using the following syntax:
+
+```shell
+terraform import wireguard_asymmetric_key.example "EFr5/97eoK32SeMingmUqJpE4TL21nckcl2jQ9ZT82g="
+```
