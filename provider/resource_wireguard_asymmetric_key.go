@@ -12,6 +12,9 @@ func resourceWireguardAsymmetricKey() *schema.Resource {
 		Create: resourceWireguardAsymmetricKeyCreate,
 		Read:   resourceWireguardAsymmetricKeyRead,
 		Delete: resourceWireguardAsymmetricKeyDelete,
+		Importer: &schema.ResourceImporter{
+			State: resourceWireguardAsymmetricKeyImport,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"bind": {
@@ -66,4 +69,17 @@ func resourceWireguardAsymmetricKeyRead(d *schema.ResourceData, m interface{}) e
 
 func resourceWireguardAsymmetricKeyDelete(d *schema.ResourceData, m interface{}) error {
 	return nil
+}
+
+func resourceWireguardAsymmetricKeyImport(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	// d.Id() is the argument passed to terraform import
+	private_key := d.Id()
+	key, err := wgtypes.ParseKey(private_key)
+	if err != nil {
+		return nil, err
+	}
+	d.Set("private_key", key.String())
+	d.Set("public_key", key.PublicKey().String())
+	d.SetId(key.PublicKey().String())
+	return []*schema.ResourceData{d}, nil
 }
