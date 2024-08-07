@@ -21,7 +21,8 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 			"private_key": {
 				Description: "The base64 private key for this peer's interface.",
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				Sensitive:   true,
 			},
 
 			"listen_port": {
@@ -146,7 +147,9 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 
 const wgTemplateStr = `
 [Interface]
+{{- if .PrivateKey }}
 PrivateKey = {{ .PrivateKey }}
+{{- end }}
 
 {{- if .ListenPort }}
 ListenPort = {{ .ListenPort }}
@@ -234,7 +237,7 @@ type WgQuickConfig struct {
 }
 
 type WgConfig struct {
-	PrivateKey   string
+	PrivateKey   *string
 	ListenPort   *int
 	FirewallMark *string
 	WgQuickConfig
@@ -242,8 +245,21 @@ type WgConfig struct {
 }
 
 func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}) error {
-	cfg := WgConfig{
-		PrivateKey: d.Get("private_key").(string),
+	cfg := WgConfig{}
+
+	if v, set := d.GetOk("private_key"); set {
+		k := v.(string)
+		cfg.PrivateKey = &k
+
+		key, err := wgtypes.ParseKey(k)
+		if err != nil {
+			return err
+		}
+
+		d.SetId(key.PublicKey().String())
+	} else {
+		key := wgtypes.Key{}
+		d.SetId(key.PublicKey().String())
 	}
 
 	if v, set := d.GetOk("listen_port"); set {
@@ -349,12 +365,6 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 		return err
 	}
 
-	key, err := wgtypes.ParseKey(cfg.PrivateKey)
-	if err != nil {
-		return err
-	}
-
-	d.SetId(key.PublicKey().String())
 	d.Set("conf", buf.String())
 	return nil
 }
