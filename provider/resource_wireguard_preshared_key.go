@@ -3,6 +3,7 @@ package provider
 import (
 	"crypto/sha256"
 	"encoding/hex"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 )
@@ -14,6 +15,9 @@ func resourceWireguardPresharedKey() *schema.Resource {
 		Create: resourceWireguardPresharedKeyCreate,
 		Read:   resourceWireguardPresharedKeyRead,
 		Delete: resourceWireguardPresharedKeyDelete,
+		Importer: &schema.ResourceImporter{
+			State: resourceWireguardPresharedKeyImport,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"key": {
@@ -48,4 +52,16 @@ func resourceWireguardPresharedKeyRead(d *schema.ResourceData, m interface{}) er
 func resourceWireguardPresharedKeyDelete(d *schema.ResourceData, m interface{}) error {
 	d.SetId("")
 	return nil
+}
+
+func resourceWireguardPresharedKeyImport(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	// d.Id() is the argument passed to terraform import
+	key := d.Id()
+	err := d.Set("key", key)
+	if err != nil {
+		return nil, err
+	}
+	hash := sha256.Sum256([]byte(key))
+	d.SetId(hex.EncodeToString(hash[:]))
+	return []*schema.ResourceData{d}, nil
 }

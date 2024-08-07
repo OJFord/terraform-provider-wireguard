@@ -31,4 +31,10 @@ output "wg_preshared_key" {
 - `id` (String) The ID of this resource.
 - `key` (String, Sensitive) Additional layer of symmetric-key cryptography to be mixed into the already existing public-key cryptography, for post-quantum resistance.
 
+## Import
 
+Import is supported using the following syntax:
+
+```shell
+terraform import wireguard_preshared_key.example "sreVpk9zmgdSV1zYk6pJ+SqolQwVuRKGYoEFmb4/h1k="
+```
