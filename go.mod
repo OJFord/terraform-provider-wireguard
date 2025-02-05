@@ -1,8 +1,6 @@
 module github.com/OJFord/terraform-provider-wireguard
 
-go 1.21
-
-toolchain go1.22.1
+go 1.23
 
 require (
 	github.com/hashicorp/terraform-plugin-docs v0.19.4
