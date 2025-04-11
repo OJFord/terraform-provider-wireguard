@@ -136,6 +136,11 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 							Type:        schema.TypeInt,
 							Optional:    true,
 						},
+						"description": {
+							Description: "A description for this peer.",
+							Type:        schema.TypeString,
+							Optional:    true,
+						},
 					},
 				},
 			},
@@ -194,6 +199,9 @@ PostDown = {{ . }}
 {{- range .Peers }}
 
 [Peer]
+{{- if .Description }}
+# {{ .Description }}
+{{- end }}
 PublicKey = {{ .PublicKey }}
 
 {{- if .PresharedKey }}
@@ -219,6 +227,7 @@ var wgTemplate = template.Must(template.New("wg").Parse(wgTemplateStr))
 
 type WgPeerConfig struct {
 	PublicKey           string
+	Description         *string
 	PresharedKey        *string
 	AllowedIPs          []string
 	Endpoint            *string
@@ -354,6 +363,11 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 			if v := peer["persistent_keepalive"]; v != 0 {
 				ka := v.(int)
 				peerCfg.PersistentKeepalive = &ka
+			}
+
+			if v := peer["description"]; v != "" {
+				desc := v.(string)
+				peerCfg.Description = &desc
 			}
 
 			cfg.Peers = append(cfg.Peers, peerCfg)
