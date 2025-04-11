@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
+	"strings"
 	"text/template"
 )
 
@@ -200,7 +201,9 @@ PostDown = {{ . }}
 
 [Peer]
 {{- if .Description }}
-# {{ .Description }}
+{{- range .Description }}
+# {{ . }}
+{{- end }}
 {{- end }}
 PublicKey = {{ .PublicKey }}
 
@@ -227,7 +230,7 @@ var wgTemplate = template.Must(template.New("wg").Parse(wgTemplateStr))
 
 type WgPeerConfig struct {
 	PublicKey           string
-	Description         *string
+	Description         []string
 	PresharedKey        *string
 	AllowedIPs          []string
 	Endpoint            *string
@@ -366,8 +369,8 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 			}
 
 			if v := peer["description"]; v != "" {
-				desc := v.(string)
-				peerCfg.Description = &desc
+				desc := strings.Split(v.(string), "\n")
+				peerCfg.Description = desc
 			}
 
 			cfg.Peers = append(cfg.Peers, peerCfg)
