@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
+	"strings"
 	"text/template"
 )
 
@@ -136,6 +137,11 @@ func dataSourceWireguardConfigDocument() *schema.Resource {
 							Type:        schema.TypeInt,
 							Optional:    true,
 						},
+						"description": {
+							Description: "A description for this peer.",
+							Type:        schema.TypeString,
+							Optional:    true,
+						},
 					},
 				},
 			},
@@ -194,6 +200,11 @@ PostDown = {{ . }}
 {{- range .Peers }}
 
 [Peer]
+{{- if .Comments }}
+{{- range .Comments }}
+# {{ . }}
+{{- end }}
+{{- end }}
 PublicKey = {{ .PublicKey }}
 
 {{- if .PresharedKey }}
@@ -219,6 +230,7 @@ var wgTemplate = template.Must(template.New("wg").Parse(wgTemplateStr))
 
 type WgPeerConfig struct {
 	PublicKey           string
+	Comments            []string
 	PresharedKey        *string
 	AllowedIPs          []string
 	Endpoint            *string
@@ -354,6 +366,11 @@ func dataSourceWireguardConfigDocumentRead(d *schema.ResourceData, m interface{}
 			if v := peer["persistent_keepalive"]; v != 0 {
 				ka := v.(int)
 				peerCfg.PersistentKeepalive = &ka
+			}
+
+			if v := peer["description"]; v != "" {
+				desc := strings.Split(v.(string), "\n")
+				peerCfg.Comments = desc
 			}
 
 			cfg.Peers = append(cfg.Peers, peerCfg)
