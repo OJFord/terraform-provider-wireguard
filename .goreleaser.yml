@@ -57,6 +57,5 @@ release:
       name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   # If you want to manually examine the release before its live, uncomment this line:
   # draft: true
-  auto_generate_release_notes: true
 changelog:
-  disable: true
+  use: github
